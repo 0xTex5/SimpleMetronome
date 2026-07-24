@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<component name="MainScene" extends="Scene" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+	<!-- importing main handler -->
+    <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+    
+    <children>
+    
+        <Label id="tempo" translation="[550, 50]" text="140" horizAlign="center" width="800" height="100" color="0xffffffff" font="font:LargeSystemFont"/>
+        
+        <ButtonGroup id = "metronomeButtons" />
+
+        <PinPad 
+            id = "pinPad" 
+            pinLength = "3"
+            secureMode = "false" />
+
+        <SoundEffect
+            id = "click"
+            uri="pkg:/sounds/click.mp3"
+            control="stop"
+        />   
+        
+    </children>
+</component>
