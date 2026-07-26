@@ -1,25 +1,25 @@
 sub initPinPad()
-    metronomeButtons.visible = false
-    pinPad.visible = true
-    pinrect = pinPad.boundingRect()
-    pcenterx = (1280 - pinrect.width) / 2
+    m.metronomeButtons.visible = false
+    m.pinPad.visible = true
+    pinrect = m.pinPad.boundingRect()
+    pcenterx = (1920 - pinrect.width) / 2
     pcentery = (720 - pinrect.height) / 2
-    pinPad.translation = [ pcenterx, pcentery ]
+    m.pinPad.translation = [ pcenterx, pcentery ]
 
-    pinPad.setFocus(true)
+    m.pinPad.setFocus(true)
 
 end sub
 
 sub initMetButtons()
-    pinPad.visible = false
-    metronomeButtons.visible = true
+    m.pinPad.visible = false
+    m.metronomeButtons.visible = true
 
-    rect = metronomeButtons.boundingRect()
-    centerx = (1280 - rect.width) / 2
+    rect = m.metronomeButtons.boundingRect()
+    centerx = (1920 - rect.width) / 2
     centery = (720 - rect.height) / 2
-    metronomeButtons.translation = [ centerx, centery ]
+    m.metronomeButtons.translation = [ centerx, centery ]
 
-    metronomeButtons.setFocus(true)
+    m.metronomeButtons.setFocus(true)
 
 end sub
 
@@ -30,13 +30,13 @@ sub init()
     
     click = m.top.findNode("click")
     tempo = m.top.findNode("tempo")
-    pinPad = m.top.findNode("pinPad")
+    m.pinPad = m.top.findNode("pinPad")
 
-    pinPad.visible = false
+    m.pinPad.visible = false
 
-    metronomeButtons = m.top.findNode("metronomeButtons")
+    m.metronomeButtons = m.top.findNode("metronomeButtons")
 
-    metronomeButtons.buttons = [ "-", "Start/Stop", "+", "Keyboard" ]
+    m.metronomeButtons.buttons = [ "-", "Start/Stop", "+", "Keyboard" ]
 
     initMetButtons()
 
