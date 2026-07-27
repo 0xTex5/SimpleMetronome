@@ -18,7 +18,7 @@
 
         <SoundEffect
             id = "click"
-            uri="pkg:/sounds/click.mp3"
+            uri="pkg:/sounds/click.wav"
             control="stop"
         />   
         

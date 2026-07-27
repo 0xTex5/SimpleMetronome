@@ -26,7 +26,7 @@ end sub
 sub metButtonPressed()
     m.buttonSelected = m.metronomeButtons.getChild(m.metronomeButtons.buttonSelected)
     m.buttonValue = m.buttonSelected.text
-    print m.buttonValue
+    'print m.buttonValue
 
     if m.buttonValue = "-"
         m.tempoInt = strtoi(m.tempo.text)
@@ -39,9 +39,26 @@ sub metButtonPressed()
     else if m.buttonValue = "Keyboard"
         initPinPad()
     else if m.buttonValue = "Start/Stop"
-        m.click.control = "play"
+        if m.canMetLoop = true
+            m.canMetLoop = false
+            metLoop()
+        else if m.canMetLoop = false
+            m.canMetLoop = true        
+        end if
     end if
 
+end sub
+
+sub metLoop()
+    m.msTempo = 60000 / m.tempoInt
+
+    while true
+        if m.canMetLoop = true
+            exit while
+        end if
+        sleep(m.msTempo)
+        m.click.control = "play"
+    end while
 end sub
 
 sub init()
@@ -61,17 +78,17 @@ sub init()
 
     m.metronomeButtons.observeField("buttonSelected", "metButtonPressed")
 
+    m.canMetLoop = true
+
     initMetButtons()
 
 End sub
 
 'function onKeyEvent(key as String, press as Boolean) as Boolean
-'    result = true
+'    result = false
 '    if press then
-'        if key = "OK"
-'            if m.click.state <> "playing"
-'                m.click.control = "play"
-'            end if
+'        if m.click.state <> "playing"
+'            m.click.control = "play"
 '        end if
 '    end if
 '    
