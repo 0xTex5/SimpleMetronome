@@ -23,13 +23,34 @@ sub initMetButtons()
 
 end sub
 
+sub metButtonPressed()
+    m.buttonSelected = m.metronomeButtons.getChild(m.metronomeButtons.buttonSelected)
+    m.buttonValue = m.buttonSelected.text
+    print m.buttonValue
+
+    if m.buttonValue = "-"
+        m.tempoInt = strtoi(m.tempo.text)
+        m.tempoInt = m.tempoInt - 1
+        m.tempo.text = stri(m.tempoInt)
+    else if m.buttonValue = "+"
+        m.tempoInt = strtoi(m.tempo.text)
+        m.tempoInt = m.tempoInt + 1
+        m.tempo.text = stri(m.tempoInt)
+    else if m.buttonValue = "Keyboard"
+        initPinPad()
+    else if m.buttonValue = "Start/Stop"
+        m.click.control = "play"
+    end if
+
+end sub
+
 sub init()
     m.top.setFocus(true)
     m.top.backgroundUri = ""
     m.top.backgroundColor = "0x80000000"
     
-    click = m.top.findNode("click")
-    tempo = m.top.findNode("tempo")
+    m.click = m.top.findNode("click")
+    m.tempo = m.top.findNode("tempo")
     m.pinPad = m.top.findNode("pinPad")
 
     m.pinPad.visible = false
@@ -38,20 +59,21 @@ sub init()
 
     m.metronomeButtons.buttons = [ "-", "Start/Stop", "+", "Keyboard" ]
 
+    m.metronomeButtons.observeField("buttonSelected", "metButtonPressed")
+
     initMetButtons()
 
 End sub
 
-function onKeyEvent(key as String, press as Boolean) as Boolean
-    result = true
-    
-    if press then
-        if key = "OK"
-            if click.state <> "playing"
-                click.control = "play"
-            end if
-        end if
-    end if
-    
-    return result 
-end function
+'function onKeyEvent(key as String, press as Boolean) as Boolean
+'    result = true
+'    if press then
+'        if key = "OK"
+'            if m.click.state <> "playing"
+'                m.click.control = "play"
+'            end if
+'        end if
+'    end if
+'    
+'    return result 
+'end function
