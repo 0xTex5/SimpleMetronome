@@ -1,4 +1,6 @@
 sub initPinPad()
+    m.tempo.visible = false
+    m.pinPadLabel.visible = true
     m.metronomeButtons.visible = false
     m.pinPad.visible = true
     pinrect = m.pinPad.boundingRect()
@@ -11,6 +13,8 @@ sub initPinPad()
 end sub
 
 sub initMetButtons()
+    m.pinPadLabel.visible = false
+    m.tempo.visible = true
     m.pinPad.visible = false
     m.metronomeButtons.visible = true
 
@@ -26,51 +30,52 @@ end sub
 sub metButtonPressed()
     m.buttonSelected = m.metronomeButtons.getChild(m.metronomeButtons.buttonSelected)
     m.buttonValue = m.buttonSelected.text
-    'print m.buttonValue
 
     if m.buttonValue = "-"
         m.tempoInt = strtoi(m.tempo.text)
-        m.tempoInt = m.tempoInt - 1
-        m.tempo.text = stri(m.tempoInt)
+        if m.tempoInt <> 1
+            m.tempoInt = m.tempoInt - 1
+            m.tempo.text = stri(m.tempoInt)
+        end if
     else if m.buttonValue = "+"
         m.tempoInt = strtoi(m.tempo.text)
-        m.tempoInt = m.tempoInt + 1
-        m.tempo.text = stri(m.tempoInt)
+        if m.tempoInt <> 999
+            m.tempoInt = m.tempoInt + 1
+            m.tempo.text = stri(m.tempoInt)
+        end if
     else if m.buttonValue = "Keyboard"
         initPinPad()
     else if m.buttonValue = "Start/Stop"
-        if m.canMetLoop = true
-            m.canMetLoop = false
-            metLoop()
-        else if m.canMetLoop = false
-            m.canMetLoop = true        
+        if m.clickTimer.control = "stop"
+            m.msTempo = 60 / m.tempoInt
+            m.clickTimer.duration = m.msTempo
+            m.clickTimer.control = "start"
+        else if m.clickTimer.control = "start"
+            m.clickTimer.control = "stop"
         end if
     end if
 
 end sub
 
-sub metLoop()
-    m.msTempo = 60000 / m.tempoInt
-
-    while true
-        if m.canMetLoop = true
-            exit while
-        end if
-        sleep(m.msTempo)
-        m.click.control = "play"
-    end while
+sub metClick()
+    m.click.control = "play"
 end sub
 
 sub init()
+    m.top.backExitsScene = false
     m.top.setFocus(true)
     m.top.backgroundUri = ""
     m.top.backgroundColor = "0x80000000"
     
     m.click = m.top.findNode("click")
     m.tempo = m.top.findNode("tempo")
+    m.pinPadLabel = m.top.findNode("pinPadLabel")
     m.pinPad = m.top.findNode("pinPad")
+    m.clickTimer = m.top.findNode("clickTimer")
 
     m.pinPad.visible = false
+
+    m.pinPadLabel.visible = false
 
     m.metronomeButtons = m.top.findNode("metronomeButtons")
 
@@ -78,19 +83,28 @@ sub init()
 
     m.metronomeButtons.observeField("buttonSelected", "metButtonPressed")
 
-    m.canMetLoop = true
+    m.clickTimer.observeField("fire", "metClick")
+
+    m.tempoInt = 140
 
     initMetButtons()
 
 End sub
 
-'function onKeyEvent(key as String, press as Boolean) as Boolean
-'    result = false
-'    if press then
-'        if m.click.state <> "playing"
-'            m.click.control = "play"
-'        end if
-'    end if
-'    
-'    return result 
-'end function
+function onKeyEvent(key as String, press as Boolean) as Boolean
+    result = false
+    if press then 
+        if key = "back"
+            if m.pinPad.visible = true
+                if m.pinPad.pin = "000"
+                    m.pinPad.pin = "001"
+                end if
+                m.tempo.text = m.pinPad.pin
+                m.tempoInt = strtoi(m.tempo.text)
+                initMetButtons()
+            end if
+        end if
+    end if
+    
+    return result 
+end function

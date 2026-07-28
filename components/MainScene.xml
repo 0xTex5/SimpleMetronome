@@ -2,19 +2,26 @@
 
 
 <component name="MainScene" extends="Scene" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
-	<!-- importing main handler -->
     <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
     
     <children>
     
         <Label id="tempo" translation="[550, 50]" text="140" horizAlign="center" width="800" height="100" color="0xffffffff" font="font:LargeSystemFont"/>
         
+        <Label id="pinPadLabel" translation="[550, 50]" text="Enter Tempo and Press Back to Save" horizAlign="center" width="800" height="100" color="0xffffffff" font="font:LargeSystemFont"/>
+
         <ButtonGroup id = "metronomeButtons" />
 
         <PinPad 
             id = "pinPad" 
             pinLength = "3"
             secureMode = "false" />
+
+        <Timer
+            id="clickTimer"
+            repeat="true"
+            duration="0.43"
+            control="stop" />
 
         <SoundEffect
             id = "click"
