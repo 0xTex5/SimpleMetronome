@@ -103,6 +103,14 @@ function onKeyEvent(key as String, press as Boolean) as Boolean
                 m.tempoInt = strtoi(m.tempo.text)
                 initMetButtons()
             end if
+        else if key = "play"
+            if m.clickTimer.control = "stop"
+                m.msTempo = 60 / m.tempoInt
+                m.clickTimer.duration = m.msTempo
+                m.clickTimer.control = "start"
+            else if m.clickTimer.control = "start"
+                m.clickTimer.control = "stop"
+            end if
         end if
     end if
     
